@@ -1,24 +1,33 @@
-# Snake game
+# Pranav's Arcade
 
-[![Deploy to GitHub Pages](https://github.com/topranavyadav/snake/actions/workflows/deploy.yml/badge.svg)](https://github.com/topranavyadav/snake/actions/workflows/deploy.yml)
+[![Deploy](https://github.com/topranavyadav/arcade/actions/workflows/deploy.yml/badge.svg)](https://github.com/topranavyadav/arcade/actions/workflows/deploy.yml)
 
-### Access from Anywhere on Internet:
-https://topranavyadav.github.io/snake/
+Browser-based games with a space/cosmos theme. Playable on desktop and mobile.
 
-### Access from Locally
-Just open index.html in a browser and play the game!
+## Play Online
 
-## Navigation 
+https://topranavyadav.github.io/arcade/
 
-Controls: Arrow keys or WASD
+## Games
 
-## Score
+| Game | Folder | Status |
+|------|--------|--------|
+| Space Snake | snake/ | Live |
+| Tetris | tetris/ | Coming soon |
+| Flappy Bird | flappy/ | Coming soon |
+| Asteroids | asteroids/ | Coming soon |
 
-Score = Number of mushrooms eaten. 
+## Controls
 
-Snake grows in size with every mushroom eaten. 
+Desktop: Arrow keys or WASD
+Mobile: Swipe on the canvas or use the on-screen D-pad
 
-## Game Over
+## Run Locally
 
-When snake eats itself.
+Open index.html in any browser - no server needed.
 
+## Adding a New Game
+
+1. Create folder: your-game/index.html
+2. Add a card in the root index.html launcher
+3. Push to main - GitHub Pages deploys automatically
