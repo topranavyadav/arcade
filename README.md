@@ -1,5 +1,7 @@
 # Snake game
 
+[![Deploy to GitHub Pages](https://github.com/topranavyadav/snake/actions/workflows/deploy.yml/badge.svg)](https://github.com/topranavyadav/snake/actions/workflows/deploy.yml)
+
 ### Access from Anywhere on Internet:
 https://topranavyadav.github.io/snake/
 
