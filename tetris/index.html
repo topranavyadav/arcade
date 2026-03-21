@@ -478,10 +478,7 @@
         // Temporarily reset scale to measure natural dimensions
         wrapper.style.transform = 'scale(1)';
         const naturalW = wrapper.scrollWidth;
-        // Natural height: canvas + HUD (~60px) + gaps (~20px) + mobile controls (~80px)
-        const isMobile = window.matchMedia('(hover: none), (pointer: coarse)').matches;
-        const mobileCtrlH = isMobile ? 80 : 0;
-        const naturalH = canvas.height + 60 + 30 + mobileCtrlH;
+        const naturalH = wrapper.scrollHeight;
         const maxW = window.innerWidth - 16;
         const maxH = window.innerHeight - 16;
         const scale = Math.min(1, maxW / naturalW, maxH / naturalH);
