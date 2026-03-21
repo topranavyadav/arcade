@@ -21,9 +21,7 @@
       overflow: hidden;
       height: 100vh;
       width: 100vw;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: relative;
       touch-action: none;
     }
 
@@ -36,13 +34,15 @@
 
     /* ── Layout ── */
     #wrapper {
-      position: relative;
+      position: absolute;
+      top: 50%;
+      left: 50%;
       z-index: 10;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 10px;
-      /* shrink to fit viewport */
+      /* shrink to fit viewport — JS applies translate(-50%,-50%) scale(X) */
       transform-origin: center center;
     }
 
@@ -475,14 +475,14 @@
       // Scale wrapper to fit viewport (accounts for both width and height)
       function scaleWrapper() {
         const wrapper = document.getElementById('wrapper');
-        // Temporarily reset scale to measure natural dimensions
-        wrapper.style.transform = 'scale(1)';
-        const naturalW = wrapper.scrollWidth;
-        const naturalH = wrapper.scrollHeight;
+        // Reset to natural size to measure true dimensions
+        wrapper.style.transform = 'translate(-50%, -50%)';
+        const naturalW = wrapper.offsetWidth;
+        const naturalH = wrapper.offsetHeight;
         const maxW = window.innerWidth - 16;
         const maxH = window.innerHeight - 16;
         const scale = Math.min(1, maxW / naturalW, maxH / naturalH);
-        wrapper.style.transform = `scale(${scale})`;
+        wrapper.style.transform = `translate(-50%, -50%) scale(${scale})`;
       }
       window.addEventListener('resize', scaleWrapper);
       scaleWrapper();
