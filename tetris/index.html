@@ -20,15 +20,9 @@
       font-family: 'Segoe UI', system-ui, sans-serif;
       color: #d8d0ff;
       overflow: hidden;
-      height: 100vh;
-      /* fallback */
-      height: 100dvh;
-      /* dynamic: shrinks when browser chrome is visible */
-      width: 100vw;
-      position: relative;
+      height: 100%;
+      width: 100%;
       touch-action: none;
-      /* keep content above iOS home indicator / Android nav bar */
-      padding-bottom: env(safe-area-inset-bottom, 0px);
     }
 
     #cosmos {
@@ -39,17 +33,24 @@
     }
 
     /* ── Layout ── */
-    #wrapper {
+    /* #stage is fixed to the visual viewport and centers its child via flex */
+    #stage {
       position: fixed;
-      /* fixed = always relative to visual viewport, not page */
-      top: 50%;
-      left: 50%;
+      inset: 0;
       z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* respect iOS home indicator / Android gesture bar */
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    #wrapper {
+      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 10px;
-      /* shrink to fit viewport — JS applies translate(-50%,-50%) scale(X) */
       transform-origin: center center;
     }
 
@@ -311,86 +312,88 @@
 
   <canvas id="cosmos"></canvas>
 
-  <div id="wrapper">
+  <div id="stage">
+    <div id="wrapper">
 
-    <!-- HUD top row -->
-    <div id="hud">
-      <div class="panel">
-        <div class="panel-label">Score</div>
-        <div class="panel-value" id="scoreVal">0</div>
-      </div>
-      <div class="panel">
-        <div class="panel-label">Level</div>
-        <div class="panel-value" id="levelVal">1</div>
-      </div>
-      <div class="panel">
-        <div class="panel-label">Lines</div>
-        <div class="panel-value" id="linesVal">0</div>
-      </div>
-      <div class="panel">
-        <div class="panel-label">Best</div>
-        <div class="panel-value small" id="bestVal">0</div>
-      </div>
-    </div>
-
-    <!-- Game area -->
-    <div id="game-area">
-      <div style="position:relative;">
-        <canvas id="game"></canvas>
-
-        <!-- Start -->
-        <div class="overlay" id="startScreen">
-          <h1>🟦 SPACE TETRIS</h1>
-          <p>Stack blocks, clear lines,<br>survive as long as you can!</p>
-          <p style="margin-top:8px; font-size:0.8rem; opacity:0.6;">
-            ← → Move &nbsp;·&nbsp; ↑ / Z Rotate &nbsp;·&nbsp; ↓ Soft drop &nbsp;·&nbsp; Space Hard drop
-          </p>
-          <button id="startBtn">LAUNCH</button>
-        </div>
-
-        <!-- Game over -->
-        <div class="overlay hidden" id="deathScreen">
-          <h2>GAME OVER</h2>
-          <p>The blocks reached the top.</p>
-          <div class="stat" id="finalScore"></div>
-          <div class="stat" id="finalLines"></div>
-          <button id="retryBtn">TRY AGAIN</button>
-        </div>
-
-        <!-- Pause -->
-        <div class="overlay hidden" id="pauseScreen">
-          <h1>⏸ PAUSED</h1>
-          <p style="margin-top:8px;">Press <strong>P</strong> or <strong>Esc</strong> to resume</p>
-          <button id="resumeBtn">RESUME</button>
-        </div>
-      </div>
-
-      <!-- Right panel: next piece -->
-      <div id="right-panel">
+      <!-- HUD top row -->
+      <div id="hud">
         <div class="panel">
-          <div class="panel-label">Next</div>
-          <canvas id="next-canvas" width="80" height="80"></canvas>
+          <div class="panel-label">Score</div>
+          <div class="panel-value" id="scoreVal">0</div>
         </div>
         <div class="panel">
-          <div class="panel-label">Hold</div>
-          <canvas id="hold-canvas" width="80" height="80"></canvas>
+          <div class="panel-label">Level</div>
+          <div class="panel-value" id="levelVal">1</div>
         </div>
-        <a id="back" href="../index.html">← Arcade</a>
+        <div class="panel">
+          <div class="panel-label">Lines</div>
+          <div class="panel-value" id="linesVal">0</div>
+        </div>
+        <div class="panel">
+          <div class="panel-label">Best</div>
+          <div class="panel-value small" id="bestVal">0</div>
+        </div>
       </div>
-    </div>
 
-    <!-- Mobile controls -->
-    <div id="mobile-controls">
-      <div id="dpad">
-        <button class="dpad-btn" id="dpad-up">▲</button>
-        <button class="dpad-btn" id="dpad-left">◀</button>
-        <button class="dpad-btn" id="dpad-down">▼ DROP</button>
-        <button class="dpad-btn" id="dpad-right">▶</button>
+      <!-- Game area -->
+      <div id="game-area">
+        <div style="position:relative;">
+          <canvas id="game"></canvas>
+
+          <!-- Start -->
+          <div class="overlay" id="startScreen">
+            <h1>🟦 SPACE TETRIS</h1>
+            <p>Stack blocks, clear lines,<br>survive as long as you can!</p>
+            <p style="margin-top:8px; font-size:0.8rem; opacity:0.6;">
+              ← → Move &nbsp;·&nbsp; ↑ / Z Rotate &nbsp;·&nbsp; ↓ Soft drop &nbsp;·&nbsp; Space Hard drop
+            </p>
+            <button id="startBtn">LAUNCH</button>
+          </div>
+
+          <!-- Game over -->
+          <div class="overlay hidden" id="deathScreen">
+            <h2>GAME OVER</h2>
+            <p>The blocks reached the top.</p>
+            <div class="stat" id="finalScore"></div>
+            <div class="stat" id="finalLines"></div>
+            <button id="retryBtn">TRY AGAIN</button>
+          </div>
+
+          <!-- Pause -->
+          <div class="overlay hidden" id="pauseScreen">
+            <h1>⏸ PAUSED</h1>
+            <p style="margin-top:8px;">Press <strong>P</strong> or <strong>Esc</strong> to resume</p>
+            <button id="resumeBtn">RESUME</button>
+          </div>
+        </div>
+
+        <!-- Right panel: next piece -->
+        <div id="right-panel">
+          <div class="panel">
+            <div class="panel-label">Next</div>
+            <canvas id="next-canvas" width="80" height="80"></canvas>
+          </div>
+          <div class="panel">
+            <div class="panel-label">Hold</div>
+            <canvas id="hold-canvas" width="80" height="80"></canvas>
+          </div>
+          <a id="back" href="../index.html">← Arcade</a>
+        </div>
       </div>
-      <button id="dpad-rotate">↻</button>
-    </div>
 
-  </div>
+      <!-- Mobile controls -->
+      <div id="mobile-controls">
+        <div id="dpad">
+          <button class="dpad-btn" id="dpad-up">▲</button>
+          <button class="dpad-btn" id="dpad-left">◀</button>
+          <button class="dpad-btn" id="dpad-down">▼ DROP</button>
+          <button class="dpad-btn" id="dpad-right">▶</button>
+        </div>
+        <button id="dpad-rotate">↻</button>
+      </div>
+
+    </div> <!-- /#wrapper -->
+  </div> <!-- /#stage -->
 
   <script>
     // ════════════════════════════════════════════════════════
@@ -482,18 +485,18 @@
       // Scale wrapper to fit the actual visible viewport
       function scaleWrapper() {
         const wrapper = document.getElementById('wrapper');
-        // Reset to natural size to measure true dimensions
-        wrapper.style.transform = 'translate(-50%, -50%)';
+        wrapper.style.transform = 'scale(1)';
         const naturalW = wrapper.offsetWidth;
         const naturalH = wrapper.offsetHeight;
-        // window.innerHeight is the *visual* viewport height (excludes browser chrome)
-        const safeBottom = parseInt(getComputedStyle(document.body).paddingBottom) || 0;
-        const maxW = window.innerWidth - 16;
-        const maxH = window.innerHeight - safeBottom - 16;
+        // visualViewport gives true visible area on mobile (excludes browser toolbars)
+        const vp = window.visualViewport || { width: window.innerWidth, height: window.innerHeight };
+        const maxW = vp.width - 16;
+        const maxH = vp.height - 16;
         const scale = Math.min(1, maxW / naturalW, maxH / naturalH);
-        wrapper.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        wrapper.style.transform = `scale(${scale})`;
       }
       window.addEventListener('resize', scaleWrapper);
+      if (window.visualViewport) window.visualViewport.addEventListener('resize', scaleWrapper);
       scaleWrapper();
 
       // ── Overlays ──
