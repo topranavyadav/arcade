@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Space Tetris</title>
   <style>
     *,
@@ -19,10 +19,13 @@
       font-family: 'Segoe UI', system-ui, sans-serif;
       color: #d8d0ff;
       overflow: hidden;
-      height: 100vh;
+      height: 100vh;        /* fallback */
+      height: 100dvh;       /* dynamic: shrinks when browser chrome is visible */
       width: 100vw;
       position: relative;
       touch-action: none;
+      /* keep content above iOS home indicator / Android nav bar */
+      padding-bottom: env(safe-area-inset-bottom, 0px);
     }
 
     #cosmos {
@@ -34,7 +37,7 @@
 
     /* ── Layout ── */
     #wrapper {
-      position: absolute;
+      position: fixed;   /* fixed = always relative to visual viewport, not page */
       top: 50%;
       left: 50%;
       z-index: 10;
@@ -472,15 +475,17 @@
       canvas.width = COLS * CELL;
       canvas.height = ROWS * CELL;
 
-      // Scale wrapper to fit viewport (accounts for both width and height)
+      // Scale wrapper to fit the actual visible viewport
       function scaleWrapper() {
         const wrapper = document.getElementById('wrapper');
         // Reset to natural size to measure true dimensions
         wrapper.style.transform = 'translate(-50%, -50%)';
         const naturalW = wrapper.offsetWidth;
         const naturalH = wrapper.offsetHeight;
+        // window.innerHeight is the *visual* viewport height (excludes browser chrome)
+        const safeBottom = parseInt(getComputedStyle(document.body).paddingBottom) || 0;
         const maxW = window.innerWidth - 16;
-        const maxH = window.innerHeight - 16;
+        const maxH = window.innerHeight - safeBottom - 16;
         const scale = Math.min(1, maxW / naturalW, maxH / naturalH);
         wrapper.style.transform = `translate(-50%, -50%) scale(${scale})`;
       }
